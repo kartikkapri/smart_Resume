@@ -1,28 +1,24 @@
+# Environment variables
+.env
+.env.local
+.env.production
+
+# API Keys
+*api*key*
+*.key
+
 # Python
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
+*.pyc
+*.pyo
+*.pyd
 .Python
 env/
 venv/
-ENV/
-env.bak/
-venv.bak/
-
-# FastAPI
-.env
-.env.local
+.venv/
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log
