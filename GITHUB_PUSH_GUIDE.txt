@@ -1,0 +1,360 @@
+================================================================================
+                    GITHUB PE CODE PUSH KARNE KA GUIDE
+                         Step-by-Step Instructions
+================================================================================
+
+METHOD 1: COMMAND LINE SE (RECOMMENDED)
+========================================
+
+STEP 1: Git Install Check Karo
+-------------------------------
+cmd ya terminal mein type karo:
+    git --version
+
+Agar error aaye to Git install karo: https://git-scm.com/download/win
+
+
+STEP 2: GitHub Account Banao (Agar nahi hai)
+---------------------------------------------
+1. https://github.com pe jao
+2. Sign up karo
+3. Email verify karo
+
+
+STEP 3: GitHub Pe New Repository Banao
+---------------------------------------
+1. GitHub pe login karo
+2. Top-right corner mein "+" icon pe click karo
+3. "New repository" select karo
+4. Repository details bharo:
+   - Repository name: smart-resume-analyzer
+   - Description: AI-powered resume analyzer with skill gap analysis
+   - Public ya Private select karo
+   - "Add a README file" ko UNCHECK rakho (kyunki already hai)
+5. "Create repository" button pe click karo
+
+
+STEP 4: Local Project Folder Mein Jao
+--------------------------------------
+Windows Command Prompt (cmd) kholo aur type karo:
+    cd "d:\smart resume project"
+
+
+STEP 5: Git Initialize Karo
+----------------------------
+    git init
+
+
+STEP 6: Git Config Karo (Pehli baar ke liye)
+---------------------------------------------
+Apna naam aur email add karo:
+    git config --global user.name "Your Name"
+    git config --global user.email "your.email@example.com"
+
+
+STEP 7: .gitignore File Check Karo
+-----------------------------------
+Ye files GitHub pe nahi jaani chahiye:
+- .env (API keys)
+- node_modules/
+- __pycache__/
+- *.pyc
+
+.gitignore file already hai, check karo ki sahi hai
+
+
+STEP 8: Files Add Karo
+-----------------------
+Sabhi files ko staging area mein add karo:
+    git add .
+
+Ya specific files add karne ke liye:
+    git add app/
+    git add frontend/
+    git add README.md
+
+
+STEP 9: First Commit Karo
+--------------------------
+    git commit -m "Initial commit: Smart Resume Analyzer project"
+
+
+STEP 10: GitHub Repository Se Connect Karo
+-------------------------------------------
+GitHub pe jo repository banai thi, uska URL copy karo aur:
+    git remote add origin https://github.com/YOUR_USERNAME/smart-resume-analyzer.git
+
+Replace karo YOUR_USERNAME apne GitHub username se
+
+
+STEP 11: Code Push Karo
+------------------------
+    git branch -M main
+    git push -u origin main
+
+Pehli baar GitHub username aur password/token maangega:
+- Username: Apna GitHub username
+- Password: Personal Access Token (niche dekho kaise banaye)
+
+
+STEP 12: GitHub Personal Access Token Banao (Agar password nahi chal raha)
+---------------------------------------------------------------------------
+1. GitHub pe jao: Settings → Developer settings → Personal access tokens → Tokens (classic)
+2. "Generate new token" → "Generate new token (classic)"
+3. Note: "Git operations"
+4. Expiration: 90 days ya No expiration
+5. Select scopes: "repo" checkbox ko tick karo
+6. "Generate token" pe click karo
+7. Token COPY kar lo (ye dobara nahi dikhega!)
+8. Password ki jagah ye token use karo
+
+
+================================================================================
+
+METHOD 2: GITHUB DESKTOP SE (EASY FOR BEGINNERS)
+=================================================
+
+STEP 1: GitHub Desktop Install Karo
+------------------------------------
+Download: https://desktop.github.com/
+
+
+STEP 2: GitHub Desktop Kholo Aur Login Karo
+--------------------------------------------
+Apne GitHub account se sign in karo
+
+
+STEP 3: Repository Add Karo
+----------------------------
+1. File → Add Local Repository
+2. "Choose..." button pe click karo
+3. "d:\smart resume project" folder select karo
+4. "Add Repository" pe click karo
+
+
+STEP 4: Publish Repository
+---------------------------
+1. "Publish repository" button pe click karo
+2. Name: smart-resume-analyzer
+3. Description add karo
+4. "Keep this code private" ko uncheck karo (public ke liye)
+5. "Publish Repository" pe click karo
+
+
+STEP 5: Changes Commit Karo
+----------------------------
+1. Left side mein changed files dikhenge
+2. Niche "Summary" mein commit message likho: "Initial commit"
+3. "Commit to main" button pe click karo
+
+
+STEP 6: Push to GitHub
+-----------------------
+1. Top mein "Push origin" button pe click karo
+2. Done! Code GitHub pe aa gaya
+
+
+================================================================================
+
+METHOD 3: VS CODE SE (IF YOU USE VS CODE)
+==========================================
+
+STEP 1: VS Code Mein Project Kholo
+-----------------------------------
+File → Open Folder → "d:\smart resume project" select karo
+
+
+STEP 2: Source Control Tab Kholo
+---------------------------------
+Left sidebar mein Source Control icon (branch icon) pe click karo
+
+
+STEP 3: Initialize Repository
+------------------------------
+"Initialize Repository" button pe click karo
+
+
+STEP 4: Files Stage Karo
+-------------------------
+"+" icon pe click karke sabhi files stage karo
+
+
+STEP 5: Commit Karo
+-------------------
+Upar message box mein "Initial commit" likho
+Checkmark icon pe click karo
+
+
+STEP 6: GitHub Pe Publish Karo
+-------------------------------
+"Publish to GitHub" button pe click karo
+Repository name aur visibility select karo
+"Publish" pe click karo
+
+
+================================================================================
+
+IMPORTANT COMMANDS CHEAT SHEET
+===============================
+
+Basic Commands:
+---------------
+git status              → Current status dekho
+git add .               → Sabhi files add karo
+git add filename        → Specific file add karo
+git commit -m "message" → Commit karo with message
+git push                → GitHub pe push karo
+git pull                → GitHub se latest code download karo
+
+Branch Commands:
+----------------
+git branch              → Sabhi branches dekho
+git branch new-branch   → Naya branch banao
+git checkout branch     → Branch switch karo
+git merge branch        → Branch merge karo
+
+Other Useful:
+-------------
+git log                 → Commit history dekho
+git remote -v           → Remote URLs dekho
+git clone URL           → Repository clone karo
+
+
+================================================================================
+
+COMMON ERRORS AUR SOLUTIONS
+============================
+
+Error 1: "fatal: not a git repository"
+Solution: git init karo
+
+
+Error 2: "remote origin already exists"
+Solution: git remote remove origin
+         Phir dobara git remote add origin URL
+
+
+Error 3: "failed to push some refs"
+Solution: git pull origin main --rebase
+         Phir git push origin main
+
+
+Error 4: "Permission denied"
+Solution: Personal Access Token use karo password ki jagah
+
+
+Error 5: "large files" error
+Solution: .gitignore mein add karo ya Git LFS use karo
+
+
+================================================================================
+
+AFTER PUSHING - GITHUB PE KAAM
+===============================
+
+1. README.md Update Karo:
+   - Project description
+   - Screenshots add karo
+   - Installation instructions
+   - Demo link (agar deployed hai)
+
+2. Add Topics/Tags:
+   - Settings → Topics
+   - Add: react, fastapi, ai, resume-analyzer, python, javascript
+
+3. Add License:
+   - Add file → Create new file
+   - Name: LICENSE
+   - Choose MIT License
+
+4. Enable GitHub Pages (Optional):
+   - Settings → Pages
+   - Source: main branch
+   - Frontend deploy kar sakte ho
+
+5. Add Project to Profile:
+   - Pin repository to profile
+   - Showcase your best work
+
+
+================================================================================
+
+FUTURE UPDATES PUSH KARNE KE LIYE
+==================================
+
+Jab bhi code change karo:
+
+1. git add .
+2. git commit -m "Description of changes"
+3. git push
+
+Example:
+    git add .
+    git commit -m "Added dark mode feature"
+    git push origin main
+
+
+================================================================================
+
+BEST PRACTICES
+==============
+
+✅ DO:
+- Meaningful commit messages likho
+- Regularly commit karo (small changes)
+- .env file ko .gitignore mein rakho
+- README.md ko update rakho
+- Code comments likho
+
+❌ DON'T:
+- API keys push mat karo
+- node_modules/ push mat karo
+- Large files (>100MB) push mat karo
+- Sensitive data push mat karo
+- Ek hi commit mein bahut saare changes mat karo
+
+
+================================================================================
+
+QUICK START COMMANDS (COPY-PASTE READY)
+========================================
+
+# Project folder mein jao
+cd "d:\smart resume project"
+
+# Git initialize karo
+git init
+
+# Files add karo
+git add .
+
+# Commit karo
+git commit -m "Initial commit: Smart Resume Analyzer with React and FastAPI"
+
+# GitHub repository se connect karo (APNA URL DAALO)
+git remote add origin https://github.com/YOUR_USERNAME/smart-resume-analyzer.git
+
+# Push karo
+git branch -M main
+git push -u origin main
+
+
+================================================================================
+
+HELP & RESOURCES
+=================
+
+Git Documentation: https://git-scm.com/doc
+GitHub Guides: https://guides.github.com/
+Git Cheat Sheet: https://education.github.com/git-cheat-sheet-education.pdf
+
+Video Tutorials:
+- Git & GitHub Tutorial (Hindi): YouTube pe search karo
+- "Git and GitHub for Beginners" by freeCodeCamp
+
+
+================================================================================
+
+Agar koi problem aaye to mujhe batao, main help karunga! 🚀
+
+Good luck with your GitHub journey! 💪
