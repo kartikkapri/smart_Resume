@@ -1,13 +1,21 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException, Body
+from fastapi import FastAPI, UploadFile, File, HTTPException, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import pdfplumber
 import io
+import time
+from datetime import date
 from .skills import extract_skills
 from .analyzer import analyze_skill_gap
 from .roadmap import generate_roadmap
 from .jd_matcher import compare_with_jd
 from .job_recommender import get_job_recommendations
+from .ats_scorer import calculate_ats_score
+from .ai_suggestions import get_ai_suggestions, rewrite_resume_bullets
+from .auth import (
+    RegisterRequest, LoginRequest, register_user, login_user,
+    get_current_user, save_user_analysis, get_user_history
+)
 
 class RoadmapRequest(BaseModel):
     missing_skills: list
@@ -21,6 +29,19 @@ class JobRecommendRequest(BaseModel):
     user_skills: list
     target_role: str
 
+class ATSRequest(BaseModel):
+    resume_text: str
+    target_role: str
+
+class SuggestionsRequest(BaseModel):
+    resume_text: str
+    target_role: str
+    missing_skills: list
+
+class RewriteRequest(BaseModel):
+    resume_text: str
+    target_role: str
+
 app = FastAPI()
 
 app.add_middleware(
@@ -31,76 +52,110 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.post("/auth/register")
+async def register(req: RegisterRequest):
+    return register_user(req)
+
+@app.post("/auth/login")
+async def login(req: LoginRequest):
+    return login_user(req)
+
+@app.get("/auth/history")
+async def history(request: Request):
+    user = get_current_user(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    return {"history": get_user_history(user["email"])}
+
 @app.post("/upload-resume")
 async def upload_resume(file: UploadFile = File(...)):
     if not file.filename.endswith('.pdf'):
         raise HTTPException(status_code=400, detail="Only PDF files are allowed")
-    
     content = await file.read()
     text = ""
-    
     with pdfplumber.open(io.BytesIO(content)) as pdf:
         for page in pdf.pages:
             text += page.extract_text() or ""
-    
     skills = extract_skills(text)
     return {"text": text, "skills": skills}
 
-@app.post("/analyze-gap")
-async def analyze_gap(extracted_skills: list, target_role: str):
-    return analyze_skill_gap(extracted_skills, target_role)
+@app.post("/analyze")
+async def analyze(request: Request, file: UploadFile = File(...), target_role: str = "SDE"):
+    if not file.filename.endswith('.pdf'):
+        raise HTTPException(status_code=400, detail="Only PDF files are allowed")
+    try:
+        content = await file.read()
+        text = ""
+        with pdfplumber.open(io.BytesIO(content)) as pdf:
+            for page in pdf.pages:
+                text += page.extract_text() or ""
+
+        skills = extract_skills(text)
+        gap_analysis = analyze_skill_gap(skills, target_role)
+
+        result = {
+            "matched_skills": gap_analysis["matched_skills"],
+            "missing_skills": gap_analysis["missing_skills"],
+            "readiness_score": gap_analysis["readiness_percentage"],
+            "total_skills_found": len(skills),
+            "resume_text": text
+        }
+
+        # Save to user history if logged in
+        auth_header = request.headers.get("Authorization", "")
+        if auth_header.startswith("Bearer "):
+            token = auth_header.split(" ", 1)[1]
+            from .auth import _load_users, _save_users
+            users = _load_users()
+            for email, u in users.items():
+                if u.get("token") == token:
+                    save_user_analysis(email, {
+                        "id": time.time(),
+                        "date": date.today().isoformat(),
+                        "role": target_role,
+                        "score": gap_analysis["readiness_percentage"],
+                        "matched": len(gap_analysis["matched_skills"]),
+                        "missing": len(gap_analysis["missing_skills"]),
+                        "fileName": file.filename
+                    })
+                    break
+
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error analyzing resume: {str(e)}")
+
+@app.post("/ats-score")
+async def ats_score(req: ATSRequest):
+    try:
+        return calculate_ats_score(req.resume_text, req.target_role)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/ai-suggestions")
+async def ai_suggestions(req: SuggestionsRequest):
+    try:
+        return get_ai_suggestions(req.resume_text, req.target_role, req.missing_skills)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/rewrite-resume")
+async def rewrite_resume(req: RewriteRequest):
+    try:
+        return rewrite_resume_bullets(req.resume_text, req.target_role)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/generate-roadmap")
 async def create_roadmap(request: RoadmapRequest):
     try:
-        result = generate_roadmap(request.missing_skills, request.target_role)
-        return result
+        return generate_roadmap(request.missing_skills, request.target_role)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error generating roadmap: {str(e)}")
-
-@app.post("/analyze")
-async def analyze(file: UploadFile = File(...), target_role: str = "SDE"):
-    try:
-        if not file.filename.endswith('.pdf'):
-            raise HTTPException(status_code=400, detail="Only PDF files are allowed")
-        
-        content = await file.read()
-        text = ""
-        
-        with pdfplumber.open(io.BytesIO(content)) as pdf:
-            for page in pdf.pages:
-                text += page.extract_text() or ""
-        
-        # Debug: Print extracted text
-        print(f"\n=== EXTRACTED TEXT ===")
-        print(text[:500])  # First 500 chars
-        
-        skills = extract_skills(text)
-        print(f"\n=== EXTRACTED SKILLS ===")
-        print(f"Found {len(skills)} skills: {skills}")
-        
-        gap_analysis = analyze_skill_gap(skills, target_role)
-        print(f"\n=== GAP ANALYSIS ===")
-        print(f"Role: {target_role}")
-        print(f"Matched: {gap_analysis['matched_skills']}")
-        print(f"Missing: {gap_analysis['missing_skills']}")
-        print(f"Score: {gap_analysis['readiness_percentage']}%")
-        
-        return {
-            "matched_skills": gap_analysis["matched_skills"],
-            "missing_skills": gap_analysis["missing_skills"],
-            "readiness_score": gap_analysis["readiness_percentage"],
-            "total_skills_found": len(skills)
-        }
-    except Exception as e:
-        print(f"Error in analyze: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
 
 @app.post("/compare-jd")
 async def compare_job_description(request: JDCompareRequest):
     try:
-        result = compare_with_jd(request.resume_skills, request.job_description)
-        return result
+        return compare_with_jd(request.resume_skills, request.job_description)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
 

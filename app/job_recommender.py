@@ -33,13 +33,25 @@ JOB_DATABASE = {
         {"company": "Amazon", "title": "Site Reliability Engineer", "location": "Bangalore", "experience": "3-6 years", "salary": "₹32-48 LPA", "skills": ["AWS", "Docker", "Linux", "Python"], "apply_link": "https://www.amazon.jobs"},
     ],
     "DS": [
-        # Fresher Jobs
         {"company": "TCS", "title": "Data Analyst Trainee", "location": "Multiple Locations", "experience": "0-1 years", "salary": "₹3.5-5.5 LPA", "skills": ["Python", "SQL", "Pandas"], "apply_link": "https://www.tcs.com/careers"},
         {"company": "Infosys", "title": "Data Science Associate", "location": "Bangalore/Pune", "experience": "0-2 years", "salary": "₹4.5-7 LPA", "skills": ["Python", "SQL", "ML"], "apply_link": "https://www.infosys.com/careers"},
         {"company": "Wipro", "title": "Data Analyst", "location": "Bangalore", "experience": "0-1 years", "salary": "₹4-6 LPA", "skills": ["Python", "SQL", "Pandas"], "apply_link": "https://careers.wipro.com"},
-        # Experienced Jobs
         {"company": "Google", "title": "Data Scientist", "location": "Bangalore", "experience": "2-5 years", "salary": "₹30-45 LPA", "skills": ["Python", "SQL", "ML", "Pandas"], "apply_link": "https://careers.google.com"},
         {"company": "Amazon", "title": "Business Intelligence Engineer", "location": "Bangalore", "experience": "2-5 years", "salary": "₹25-38 LPA", "skills": ["SQL", "Python", "ML", "AWS"], "apply_link": "https://www.amazon.jobs"},
+    ],
+    "Frontend": [
+        {"company": "Razorpay", "title": "Frontend Engineer", "location": "Bangalore", "experience": "0-2 years", "salary": "₹8-14 LPA", "skills": ["React", "JavaScript", "TypeScript", "CSS"], "apply_link": "https://razorpay.com/jobs"},
+        {"company": "Swiggy", "title": "UI Developer", "location": "Bangalore", "experience": "1-3 years", "salary": "₹10-18 LPA", "skills": ["React", "JavaScript", "HTML", "CSS"], "apply_link": "https://careers.swiggy.com"},
+        {"company": "Zomato", "title": "Frontend Developer", "location": "Gurgaon", "experience": "0-2 years", "salary": "₹8-15 LPA", "skills": ["React", "TypeScript", "Tailwind", "Git"], "apply_link": "https://www.zomato.com/careers"},
+        {"company": "Atlassian", "title": "Senior Frontend Engineer", "location": "Bangalore", "experience": "3-5 years", "salary": "₹30-45 LPA", "skills": ["React", "TypeScript", "Node", "REST API"], "apply_link": "https://www.atlassian.com/company/careers"},
+        {"company": "Flipkart", "title": "SDE Frontend", "location": "Bangalore", "experience": "2-4 years", "salary": "₹20-32 LPA", "skills": ["React", "JavaScript", "TypeScript", "Git"], "apply_link": "https://www.flipkartcareers.com"},
+    ],
+    "Data Analyst": [
+        {"company": "Deloitte", "title": "Data Analyst", "location": "Multiple Locations", "experience": "0-2 years", "salary": "₹5-8 LPA", "skills": ["SQL", "Python", "Excel", "Tableau"], "apply_link": "https://www2.deloitte.com/careers"},
+        {"company": "KPMG", "title": "Business Analyst", "location": "Bangalore/Mumbai", "experience": "0-2 years", "salary": "₹5-9 LPA", "skills": ["SQL", "Excel", "Python", "Statistics"], "apply_link": "https://home.kpmg/careers"},
+        {"company": "Accenture", "title": "Data & Analytics Analyst", "location": "Multiple Locations", "experience": "0-1 years", "salary": "₹4.5-7 LPA", "skills": ["SQL", "Python", "Tableau", "Pandas"], "apply_link": "https://www.accenture.com/in-en/careers"},
+        {"company": "Amazon", "title": "Business Analyst", "location": "Bangalore", "experience": "2-4 years", "salary": "₹18-28 LPA", "skills": ["SQL", "Python", "Statistics", "AWS"], "apply_link": "https://www.amazon.jobs"},
+        {"company": "Walmart", "title": "Senior Data Analyst", "location": "Bangalore", "experience": "3-5 years", "salary": "₹20-32 LPA", "skills": ["SQL", "Python", "Tableau", "MongoDB"], "apply_link": "https://careers.walmart.com"},
     ]
 }
 

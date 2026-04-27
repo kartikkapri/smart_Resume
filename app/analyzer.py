@@ -2,7 +2,9 @@ ROLE_SKILLS = {
     "SDE": ["Python", "Java", "C++", "Data Structures", "Algorithms", "DBMS", "SQL", "Git", "REST", "API"],
     "AI-ML": ["Python", "ML", "Machine Learning", "AI", "Deep Learning", "TensorFlow", "PyTorch", "NumPy", "Pandas"],
     "DevOps": ["Docker", "Kubernetes", "AWS", "Cloud", "CI/CD", "Git", "Linux", "Jenkins", "Terraform"],
-    "DS": ["Python", "SQL", "Machine Learning", "ML", "Pandas", "NumPy", "Scikit-learn", "MongoDB", "PostgreSQL"]
+    "DS": ["Python", "SQL", "Machine Learning", "ML", "Pandas", "NumPy", "Scikit-learn", "MongoDB", "PostgreSQL"],
+    "Frontend": ["React", "JavaScript", "TypeScript", "HTML", "CSS", "Tailwind", "REST API", "Git", "Node"],
+    "Data Analyst": ["SQL", "Python", "Excel", "Pandas", "NumPy", "Tableau", "Statistics", "MongoDB", "PostgreSQL"]
 }
 
 def normalize_skills(skills: list) -> set:
@@ -28,8 +30,12 @@ def analyze_skill_gap(extracted_skills: list, target_role: str) -> dict:
     required = set(ROLE_SKILLS[target_role])
     extracted = normalize_skills(extracted_skills)
     
-    matched = list(required & extracted)
-    missing = list(required - extracted)
+    # Case-insensitive matching
+    extracted_lower = {s.lower(): s for s in extracted}
+    required_lower = {s.lower(): s for s in required}
+    
+    matched = [required_lower[r] for r in required_lower if r in extracted_lower]
+    missing = [required_lower[r] for r in required_lower if r not in extracted_lower]
     readiness = round((len(matched) / len(required)) * 100, 2) if required else 0
     
     return {
